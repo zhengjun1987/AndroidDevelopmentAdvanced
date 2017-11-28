@@ -10,7 +10,7 @@ package cn.zhengjun.androiddevelopmentadvanced.chapter08reativex;
 public class TestTest {
     @org.junit.Test
     public void hello() throws Exception {
-        Test.map();
+        RxJavaBasicalOperations.zip();
     }
 
 }

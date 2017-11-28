@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
-import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.Test;
+import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.RxJavaBasicalOperations;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(button2,"操作成功",Snackbar.LENGTH_INDEFINITE).setAction("确认", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Test.repeat();
+                        RxJavaBasicalOperations.throttleWithTimeOut();
                     }
                 }).show();
             }
