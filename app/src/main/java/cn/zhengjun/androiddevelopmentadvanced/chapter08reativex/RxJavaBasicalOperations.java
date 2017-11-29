@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import rx.Notification;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -88,7 +89,7 @@ public class RxJavaBasicalOperations {
 
         System.out.println();
 
-        String[] strings = {"红酥手。黄滕酒。满城春色宫墙柳。","东风恶。欢情薄。一怀愁绪，几年离索。","错错错。春如旧。人空瘦。泪痕红浥鲛绡透。","桃花落。闲池阁。山盟虽在，锦书难托。莫莫莫。"};
+        String[] strings = {"红酥手。黄滕酒。满城春色宫墙柳。", "东风恶。欢情薄。一怀愁绪，几年离索。", "错错错。春如旧。人空瘦。泪痕红浥鲛绡透。", "桃花落。闲池阁。山盟虽在，锦书难托。莫莫莫。"};
         Observable<String> from = Observable.from(strings);
         from.subscribe(new Subscriber<String>() {
             @Override
@@ -130,12 +131,12 @@ public class RxJavaBasicalOperations {
     }
 
     public static void fragmentary() {
-        Observable.zip(Observable.just("fragmentary","腾蛟起凤","紫电青霜"),Observable.just("哀吾生之须臾","羡长江之无穷"),new Func2<String, String, String>(){
+        Observable.zip(Observable.just("fragmentary", "腾蛟起凤", "紫电青霜"), Observable.just("哀吾生之须臾", "羡长江之无穷"), new Func2<String, String, String>() {
 
             @Override
             public String call(String s, String s2) {
                 System.out.println("s = [" + s + "], s2 = [" + s2 + "]");
-                return s + "  "+s2;
+                return s + "  " + s2;
             }
         }).subscribe(new Subscriber<String>() {
             @Override
@@ -145,7 +146,7 @@ public class RxJavaBasicalOperations {
 
             @Override
             public void onError(Throwable e) {
-                System.out.println("RxJavaBasicalOperations.onError:"+e.getMessage());
+                System.out.println("RxJavaBasicalOperations.onError:" + e.getMessage());
             }
 
             @Override
@@ -159,7 +160,7 @@ public class RxJavaBasicalOperations {
 //        s = [腾蛟起凤  羡长江之无穷]
 //        RxJavaBasicalOperations.onCompleted
 
-        Observable.just("fragmentary","腾蛟起凤","紫电青霜").subscribe(
+        Observable.just("fragmentary", "腾蛟起凤", "紫电青霜").subscribe(
                 new Action1<String>() {
                     @Override
                     public void call(String s) {
@@ -196,24 +197,24 @@ public class RxJavaBasicalOperations {
                     }
 
                     @Override
-            public void onCompleted() {
-                System.out.println("RxJavaBasicalOperations.onCompleted");
-            }
+                    public void onCompleted() {
+                        System.out.println("RxJavaBasicalOperations.onCompleted");
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("e = [" + e.getMessage() + "]");
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("e = [" + e.getMessage() + "]");
+                    }
 
-            @Override
-            public void onNext(Long aLong) {
-                System.out.println("aLong = [" + aLong + "]");
-            }
-        });
+                    @Override
+                    public void onNext(Long aLong) {
+                        System.out.println("aLong = [" + aLong + "]");
+                    }
+                });
     }
 
     public static void range() {
-        Observable.range(0,20,Schedulers.io()).subscribe(new Subscriber<Integer>() {
+        Observable.range(0, 20, Schedulers.io()).subscribe(new Subscriber<Integer>() {
             @Override
             public void onCompleted() {
                 System.out.println("RxJavaBasicalOperations.onCompleted");
@@ -226,7 +227,7 @@ public class RxJavaBasicalOperations {
 
             @Override
             public void onNext(Integer integer) {
-                System.out.println("RxJavaBasicalOperations.onNext:"+integer);
+                System.out.println("RxJavaBasicalOperations.onNext:" + integer);
             }
         });
 //        11-27 15:52:30.369 27583-27794/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onNext:0
@@ -253,7 +254,7 @@ public class RxJavaBasicalOperations {
     }
 
     public static void repeat() {
-        Observable.range(0,5).repeat(2).subscribe(new Action1<Integer>() {
+        Observable.range(0, 5).repeat(2).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = [" + integer + "]");
@@ -282,19 +283,83 @@ public class RxJavaBasicalOperations {
 //        11-27 15:57:23.767 5437-5437/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onCompleted!
     }
 
-    public static void start(){}
+    public static void start() {
+        Observable.interval(3, TimeUnit.SECONDS).take(1).map(new Func1<Long, String>() {
+            @Override
+            public String call(Long aLong) {
+                return "0";
+            }
+        }).subscribe(new Subscriber<String>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                System.out.println("RxJavaBasicalOperations.onStart");
+            }
 
-    public static void defer(){}
+            @Override
+            public void onCompleted() {
+                System.out.println("RxJavaBasicalOperations.onCompleted");
+            }
 
-    public static void timer(){}
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("e = [" + e + "]");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("s = [" + s + "]");
+            }
+        });
+//        11-29 09:50:57.803 28975-28975/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onStart
+//        11-29 09:50:58.004 28975-29018/cn.zhengjun.androiddevelopmentadvanced W/OpenGLRenderer: cuilf pushLayerUpdate 309 delete mLayer: 0x7f91735500, RenderLayer: 0x7f928f1800
+//        11-29 09:51:00.806 28975-30095/cn.zhengjun.androiddevelopmentadvanced I/System.out: s = [0]
+//        11-29 09:51:00.806 28975-30095/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onCompleted
+    }
+
+    public static void defer() {
+    }
+
+    public static void timer() {
+        Observable.range(0, 3).delay(2, TimeUnit.SECONDS).subscribe(new Subscriber<Integer>() {
+
+            private long start;
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                start = System.currentTimeMillis();
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("RxJavaBasicalOperations.onCompleted  时间间隔:" + (System.currentTimeMillis() - start));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                System.out.println("integer = [" + integer + "]   时间间隔:" + (System.currentTimeMillis() - start));
+                start = System.currentTimeMillis();
+            }
+        });
+//        11-29 10:12:31.943 17485-17708/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [0]   时间间隔:2002
+//        11-29 10:12:31.948 17485-17708/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [1]   时间间隔:4
+//        11-29 10:12:31.950 17485-17708/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [2]   时间间隔:2
+//        11-29 10:12:31.952 17485-17708/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onCompleted  时间间隔:1
+    }
 
     public static final String HOST = "http://blog.csdn.net/";
 
-    public static void map(){
-        Observable.just("itachi85","zhengjun1987").map(new Func1<String, String>() {
+    public static void map() {
+        Observable.just("itachi85", "zhengjun1987").map(new Func1<String, String>() {
             @Override
             public String call(String s) {
-                return HOST+s;
+                return HOST + s;
             }
         }).subscribe(new Subscriber<String>() {
             @Override
@@ -324,11 +389,11 @@ public class RxJavaBasicalOperations {
 //        RxJavaBasicalOperations.onCompleted
     }
 
-    public static void concatMap(){
-        Observable.range(0,20).flatMap(new Func1<Integer, Observable<String>>() {
+    public static void concatMap() {
+        Observable.range(0, 20).flatMap(new Func1<Integer, Observable<String>>() {
             @Override
             public Observable<String> call(Integer integer) {
-                return Observable.just(HOST+"itachi"+integer);
+                return Observable.just(HOST + "itachi" + integer);
             }
         }).subscribe(new Action1<String>() {
             @Override
@@ -337,10 +402,10 @@ public class RxJavaBasicalOperations {
             }
         });
         System.out.println("-----------------------------------------");
-        Observable.range(0,20).concatMap(new Func1<Integer, Observable<String>>() {
+        Observable.range(0, 20).concatMap(new Func1<Integer, Observable<String>>() {
             @Override
             public Observable<String> call(Integer integer) {
-                return Observable.just(HOST+"itachi"+integer);
+                return Observable.just(HOST + "itachi" + integer);
             }
         }).subscribe(new Action1<String>() {
             @Override
@@ -391,9 +456,10 @@ public class RxJavaBasicalOperations {
 //        s = http://blog.csdn.net/itachi19
     }
 
-    public static void flatMapIterable(){
-        Observable.range(0,10).flatMapIterable(new Func1<Integer, Iterable<Integer>>() {
+    public static void flatMapIterable() {
+        Observable.range(0, 10).flatMapIterable(new Func1<Integer, Iterable<Integer>>() {
             private List<Integer> integers = new ArrayList<Integer>();
+
             @Override
             public Iterable<Integer> call(Integer integer) {
                 integers.add(integer);
@@ -461,8 +527,8 @@ public class RxJavaBasicalOperations {
 //        integer = 8
 //        integer = 9
         System.out.println();
-        Observable.range(0,10).flatMapIterable(new Func1<Integer, Iterable<Integer>>() {
-//            private List<Integer> integers = new ArrayList<Integer>();
+        Observable.range(0, 10).flatMapIterable(new Func1<Integer, Iterable<Integer>>() {
+            //            private List<Integer> integers = new ArrayList<Integer>();
             @Override
             public Iterable<Integer> call(Integer integer) {
                 List<Integer> integers = new ArrayList<Integer>();
@@ -487,7 +553,7 @@ public class RxJavaBasicalOperations {
 //        integer = 9
     }
 
-    public static void buffer(){
+    public static void buffer() {
 //        Observable.range(0,50).buffer(10)
 //                .subscribe(new Action1<List<Integer>>() {
 //                    @Override
@@ -501,8 +567,8 @@ public class RxJavaBasicalOperations {
 //        integers = [30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
 //        integers = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 //        System.out.println();
-        Observable.interval(1,TimeUnit.SECONDS)
-                .buffer(10,TimeUnit.SECONDS)
+        Observable.interval(1, TimeUnit.SECONDS)
+                .buffer(10, TimeUnit.SECONDS)
                 .subscribe(new Action1<List<Long>>() {
                     @Override
                     public void call(List<Long> longs) {
@@ -517,8 +583,8 @@ public class RxJavaBasicalOperations {
 //        11-28 11:09:56.652 5232-5540/cn.zhengjun.androiddevelopmentadvanced I/System.out: longs = [[49, 50, 51, 52, 53, 54, 55, 56, 57, 58]]
     }
 
-    public static void window(){
-        Observable.interval(1,TimeUnit.SECONDS).take(120).window(12).subscribe(new Action1<Observable<Long>>() {
+    public static void window() {
+        Observable.interval(1, TimeUnit.SECONDS).take(120).window(12).subscribe(new Action1<Observable<Long>>() {
             @Override
             public void call(Observable<Long> longObservable) {
                 System.out.println("longObservable = [" + longObservable + "]");
@@ -558,17 +624,17 @@ public class RxJavaBasicalOperations {
 //        11-28 12:00:29.893 30007-30156/cn.zhengjun.androiddevelopmentadvanced I/System.out: aLong = [23]
     }
 
-    public static void groupBy(){
+    public static void groupBy() {
         ArrayList<SwordMan> swordMen = new ArrayList<>();
-        swordMen.add(new SwordMan(1,"段正淳"));
-        swordMen.add(new SwordMan(1,"鸠摩智"));
-        swordMen.add(new SwordMan(0,"张三丰"));
-        swordMen.add(new SwordMan(0,"张无忌"));
-        swordMen.add(new SwordMan(2,"灵鹫宫"));
-        swordMen.add(new SwordMan(0,"萧峰"));
-        swordMen.add(new SwordMan(0,"扫地僧"));
-        swordMen.add(new SwordMan(1,"慕容复"));
-        swordMen.add(new SwordMan(2,"丁春秋"));
+        swordMen.add(new SwordMan(1, "段正淳"));
+        swordMen.add(new SwordMan(1, "鸠摩智"));
+        swordMen.add(new SwordMan(0, "张三丰"));
+        swordMen.add(new SwordMan(0, "张无忌"));
+        swordMen.add(new SwordMan(2, "灵鹫宫"));
+        swordMen.add(new SwordMan(0, "萧峰"));
+        swordMen.add(new SwordMan(0, "扫地僧"));
+        swordMen.add(new SwordMan(1, "慕容复"));
+        swordMen.add(new SwordMan(2, "丁春秋"));
         Observable<GroupedObservable<Integer, SwordMan>> groupedObservableObservable = Observable.from(swordMen).groupBy(new Func1<SwordMan, Integer>() {
             @Override
             public Integer call(SwordMan swordMan) {
@@ -592,8 +658,8 @@ public class RxJavaBasicalOperations {
 //        swordMan = [SwordMan{level=2, name='丁春秋'}]
     }
 
-    public static void filter(){
-        Observable.range(0,100).filter(new Func1<Integer, Boolean>() {
+    public static void filter() {
+        Observable.range(0, 100).filter(new Func1<Integer, Boolean>() {
             @Override
             public Boolean call(Integer integer) {
                 return integer % 3 == 0;
@@ -610,8 +676,8 @@ public class RxJavaBasicalOperations {
 //        integers = [[90, 93, 96, 99]]
     }
 
-    public static void elementAt(){
-        Observable.range(0,20).elementAt(10).subscribe(new Action1<Integer>() {
+    public static void elementAt() {
+        Observable.range(0, 20).elementAt(10).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = [" + integer + "]");
@@ -620,8 +686,8 @@ public class RxJavaBasicalOperations {
 //        integer = [10] @warning 注意此处是从0开始计数
     }
 
-    public static void distinct(){
-        Observable.just(1,2,2,3,4,4,1).distinct().subscribe(new Action1<Integer>() {
+    public static void distinct() {
+        Observable.just(1, 2, 2, 3, 4, 4, 1).distinct().subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = " + integer);
@@ -632,7 +698,7 @@ public class RxJavaBasicalOperations {
 //        integer = 3
 //        integer = 4
 
-        Observable.range(0,5).repeat(3).distinct().subscribe(new Action1<Integer>() {
+        Observable.range(0, 5).repeat(3).distinct().subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = [" + integer + "]");
@@ -645,8 +711,8 @@ public class RxJavaBasicalOperations {
 //        integer = [4]
     }
 
-    public static void skip(){
-        Observable.range(0,10).skip(5).subscribe(new Action1<Integer>() {
+    public static void skip() {
+        Observable.range(0, 10).skip(5).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = " + integer);
@@ -659,8 +725,8 @@ public class RxJavaBasicalOperations {
 //        integer = 9
     }
 
-    public static void take(){
-        Observable.range(0,10).take(5).subscribe(new Action1<Integer>() {
+    public static void take() {
+        Observable.range(0, 10).take(5).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = " + integer);
@@ -673,8 +739,8 @@ public class RxJavaBasicalOperations {
 //        integer = 4
     }
 
-    public static void ignoreElements(){
-        Observable.range(0,10).ignoreElements().subscribe(new Subscriber<Integer>() {
+    public static void ignoreElements() {
+        Observable.range(0, 10).ignoreElements().subscribe(new Subscriber<Integer>() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -700,8 +766,8 @@ public class RxJavaBasicalOperations {
 //        RxJavaBasicalOperations.onCompleted
     }
 
-    public static void throttleFirst(){
-        Observable.interval(1,TimeUnit.SECONDS).take(120).throttleFirst(6,TimeUnit.SECONDS)
+    public static void throttleFirst() {
+        Observable.interval(1, TimeUnit.SECONDS).take(120).throttleFirst(6, TimeUnit.SECONDS)
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
@@ -729,8 +795,8 @@ public class RxJavaBasicalOperations {
 //        11-28 16:33:10.301 21687-21870/cn.zhengjun.androiddevelopmentadvanced I/System.out: aLong = [114]
     }
 
-    public static void throttleWithTimeOut(){
-        Observable.interval(5,TimeUnit.SECONDS).take(24).throttleWithTimeout(4,TimeUnit.SECONDS)
+    public static void throttleWithTimeOut() {
+        Observable.interval(5, TimeUnit.SECONDS).take(24).throttleWithTimeout(4, TimeUnit.SECONDS)
                 .subscribe(new Subscriber<Long>() {
                     @Override
                     public void onStart() {
@@ -780,8 +846,8 @@ public class RxJavaBasicalOperations {
 //        11-28 16:56:42.225 11751-11889/cn.zhengjun.androiddevelopmentadvanced I/System.out: RxJavaBasicalOperations.onCompleted
     }
 
-    public static void startWith(){
-        Observable.just(5,10).startWith(Observable.range(0,5)).subscribe(new Action1<Integer>() {
+    public static void startWith() {
+        Observable.just(5, 10).startWith(Observable.range(0, 5)).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = [" + integer + "]");
@@ -796,8 +862,8 @@ public class RxJavaBasicalOperations {
 //        integer = [10]
     }
 
-    public static void merge(){
-        Observable.merge(Observable.range(0,5),Observable.range(5,5)).subscribe(new Action1<Integer>() {
+    public static void merge() {
+        Observable.merge(Observable.range(0, 5), Observable.range(5, 5)).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = [" + integer + "]");
@@ -812,8 +878,8 @@ public class RxJavaBasicalOperations {
 //        integer = [10]
     }
 
-    public static void concat(){
-        Observable.concat(Observable.range(0,5),Observable.just(5,6,7,8)).subscribe(new Action1<Integer>() {
+    public static void concat() {
+        Observable.concat(Observable.range(0, 5), Observable.just(5, 6, 7, 8)).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
                 System.out.println("integer = " + integer);
@@ -830,11 +896,11 @@ public class RxJavaBasicalOperations {
 //        integer = 8
     }
 
-    public static void zip(){
+    public static void zip() {
         Observable.zip(Observable.range(0, 5), Observable.just("hello", "android"), new Func2<Integer, String, String>() {
             @Override
             public String call(Integer integer, String s) {
-                return integer+":"+s;
+                return integer + ":" + s;
             }
         }).subscribe(new Action1<String>() {
             @Override
@@ -846,11 +912,11 @@ public class RxJavaBasicalOperations {
 //        s = [1:android]
     }
 
-    public static void combineLast(){
+    public static void combineLast() {
         Observable.combineLatest(Observable.range(0, 5), Observable.just("hello", "rxjava"), new Func2<Integer, String, String>() {
             @Override
             public String call(Integer integer, String s) {
-                return integer + ":"+s;
+                return integer + ":" + s;
             }
         }).subscribe(new Subscriber<String>() {
             @Override
@@ -879,7 +945,7 @@ public class RxJavaBasicalOperations {
 //        RxJavaBasicalOperations.onCompleted
     }
 
-    public static void repeatWhen(){
+    public static void repeatWhen() {
 //        Observable.range(0,6).repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
 //            @Override
 //            public Observable<?> call(Observable<? extends Void> observable) {
@@ -887,4 +953,168 @@ public class RxJavaBasicalOperations {
 //            }
 //        })
     }
+
+    public static void doOn() {
+        Observable.range(0, 6).doOnEach(new Action1<Notification<? super Integer>>() {
+            @Override
+            public void call(Notification<? super Integer> notification) {
+                System.out.println("doOnEach  notification = [" + notification + "]");
+                System.out.println("notification.getValue() = " + notification.getValue());
+            }
+        }).doOnNext(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                System.out.println("doOnNext  integer = [" + integer + "]");
+            }
+        }).doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                System.out.println("doOnSubscribe");
+            }
+        }).doOnUnsubscribe(new Action0() {
+            @Override
+            public void call() {
+                System.out.println("doOnUnsubscribe");
+            }
+        }).doOnCompleted(new Action0() {
+            @Override
+            public void call() {
+                System.out.println("doOnCompleted!!!");
+            }
+        }).doOnTerminate(new Action0() {
+            @Override
+            public void call() {
+                System.out.println("doOnTerminate!!!");
+            }
+        }).doOnRequest(new Action1<Long>() {
+            @Override
+            public void call(Long aLong) {
+                System.out.println("doOnRequest  aLong = [" + aLong + "]");
+            }
+        }).doAfterTerminate(new Action0() {
+            @Override
+            public void call() {
+                System.out.println("finallyDo|doAfterTerminate");
+            }
+        }).subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                System.out.println("RxJavaBasicalOperations.onStart");
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("RxJavaBasicalOperations.onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("RxJavaBasicalOperations.onError");
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                System.out.println("RxJavaBasicalOperations.onNext  integer = [" + integer + "]");
+            }
+        });
+//        RxJavaBasicalOperations.onStart
+//        doOnRequest  aLong = [9223372036854775807]
+//        doOnSubscribe
+//        doOnEach  notification = [[rx.Notification@92489da1 OnNext 0]]
+//        notification.getValue() = 0
+//        doOnNext  integer = [0]
+//        RxJavaBasicalOperations.onNext  integer = [0]
+//        doOnEach  notification = [[rx.Notification@92489da2 OnNext 1]]
+//        notification.getValue() = 1
+//        doOnNext  integer = [1]
+//        RxJavaBasicalOperations.onNext  integer = [1]
+//        doOnEach  notification = [[rx.Notification@92489da3 OnNext 2]]
+//        notification.getValue() = 2
+//        doOnNext  integer = [2]
+//        RxJavaBasicalOperations.onNext  integer = [2]
+//        doOnEach  notification = [[rx.Notification@92489da4 OnNext 3]]
+//        notification.getValue() = 3
+//        doOnNext  integer = [3]
+//        RxJavaBasicalOperations.onNext  integer = [3]
+//        doOnEach  notification = [[rx.Notification@92489da5 OnNext 4]]
+//        notification.getValue() = 4
+//        doOnNext  integer = [4]
+//        RxJavaBasicalOperations.onNext  integer = [4]
+//        doOnEach  notification = [[rx.Notification@92489da6 OnNext 5]]
+//        notification.getValue() = 5
+//        doOnNext  integer = [5]
+//        RxJavaBasicalOperations.onNext  integer = [5]
+//        doOnEach  notification = [[rx.Notification@64cee07 OnCompleted]]
+//        notification.getValue() = null
+//        doOnCompleted!!!
+//                doOnTerminate!!!
+//                RxJavaBasicalOperations.onCompleted
+//        doOnUnsubscribe
+//        finallyDo|doAfterTerminate
+    }
+
+    public static void subscribeOn() {
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                System.out.println("subscriber = [" + subscriber + "]  " + Thread.currentThread().getName());
+                subscriber.onNext(HOST);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        System.out.println("doOnNext  s = [" + s + "]  " + Thread.currentThread().getName());
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("RxJavaBasicalOperations.onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        System.out.println("s = [" + s + "]  " + Thread.currentThread().getName());
+                    }
+                });
+    }
+
+    public static void timeout() {
+        Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                for (int i = 0; i < 6; i++) {
+                    try {
+                        Thread.sleep(i * 100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    subscriber.onNext(i);
+                }
+                subscriber.onCompleted();
+            }
+        }).timeout(300,TimeUnit.MILLISECONDS,Observable.just(10,11))
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        System.out.println("integer = [" + integer + "]");
+                    }
+                });
+//        11-29 11:32:03.824 26042-26042/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [0]
+//        11-29 11:32:03.925 26042-26042/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [1]
+//        11-29 11:32:04.128 26042-26042/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [2]
+//        11-29 11:32:04.429 26042-26042/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [3]
+//        11-29 11:32:04.732 26042-26424/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [10]
+//        11-29 11:32:04.733 26042-26424/cn.zhengjun.androiddevelopmentadvanced I/System.out: integer = [11]
+    }
+
 }

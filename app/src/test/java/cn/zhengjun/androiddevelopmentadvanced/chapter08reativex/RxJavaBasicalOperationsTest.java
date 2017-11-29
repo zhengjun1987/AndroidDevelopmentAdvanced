@@ -7,10 +7,10 @@ package cn.zhengjun.androiddevelopmentadvanced.chapter08reativex;
  * Date    : 2017/11/27 14:38
  * Summary : null
  */
-public class TestTest {
+public class RxJavaBasicalOperationsTest {
     @org.junit.Test
     public void hello() throws Exception {
-        RxJavaBasicalOperations.zip();
+        RxJavaBasicalOperations.doOn();
     }
 
 }
