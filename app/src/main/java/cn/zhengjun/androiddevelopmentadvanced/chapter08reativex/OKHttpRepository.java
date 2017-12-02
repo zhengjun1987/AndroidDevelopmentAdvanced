@@ -48,7 +48,9 @@ public class OKHttpRepository {
                     public void onResponse(Call call, Response response) throws IOException {
                         System.out.println("call = " + call.request().toString());
                         System.out.println("response = " + response);
-                        subscriber.onNext(response.body().string());
+                        String string = response.body().string();
+                        System.out.println("response.body().string() = " + response.body().string());
+                        subscriber.onNext(string);
                         subscriber.onCompleted();
                     }
                 });

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -427,5 +428,49 @@ public class ExceptionProcessOperators {
 //        key = 张无忌 ; value = SwordMan{level=0, name='张无忌'}
 //        key = 扫地僧 ; value = SwordMan{level=0, name='扫地僧'}
 //        key = 鸠摩智 ; value = SwordMan{level=1, name='鸠摩智'}
+    }
+
+    public static void timeout(){
+        Observable.range(11,5).delay(3,TimeUnit.SECONDS)
+                .timeout(4,TimeUnit.SECONDS)
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onStart() {
+                        System.out.println("ExceptionProcessOperators.onStart");
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("ExceptionProcessOperators.onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        TimeoutException timeoutException = e instanceof TimeoutException ? ((TimeoutException) e) : null;
+                        if (timeoutException != null) {
+                            System.out.println("操作超时未返回数据!");
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        System.out.println("integer = [" + integer + "]");
+                    }
+                });
+//        12-02 14:54:03.811 12881-12881/cn.zhengjun.androiddevelopmentadvanced I/System.out: ExceptionProcessOperators.onStart
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err: java.util.concurrent.TimeoutException
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at rx.internal.operators.OperatorTimeoutBase$TimeoutSubscriber.onTimeout(OperatorTimeoutBase.java:177)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at rx.internal.operators.OperatorTimeout$1$1.call(OperatorTimeout.java:41)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at rx.internal.schedulers.EventLoopsScheduler$EventLoopWorker$2.call(EventLoopsScheduler.java:189)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at rx.internal.schedulers.ScheduledAction.run(ScheduledAction.java:55)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:423)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.FutureTask.run(FutureTask.java:237)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:154)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:269)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1113)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:588)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced W/System.err:     at java.lang.Thread.run(Thread.java:818)
+//        12-02 14:54:07.821 12881-13362/cn.zhengjun.androiddevelopmentadvanced I/System.out: 操作超时未返回数据!
     }
 }

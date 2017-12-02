@@ -12,7 +12,7 @@ import org.junit.Test;
 public class ExceptionProcessOperatorsTest {
     @Test
     public void catchErr() throws Exception {
-        ExceptionProcessOperators.toMap();
+        ExceptionProcessOperators.timeout();
     }
 
 }

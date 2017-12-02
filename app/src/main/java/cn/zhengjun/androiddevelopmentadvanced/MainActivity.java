@@ -7,16 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
-import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.IpRequest;
-import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.OKHttpRepository;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.MergeTest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,29 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(button2,"操作成功",Snackbar.LENGTH_INDEFINITE).setAction("确认", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        OKHttpRepository okHttpRepository = new OKHttpRepository();
-                        okHttpRepository.requestAsync("115.204.105.219")
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<String>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        System.out.println("OKHttpRepositoryTest.onCompleted");
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        System.out.println("e = [" + e + "]");
-                                    }
-
-                                    @Override
-                                    public void onNext(String s) {
-                                        System.out.println("s = [" + s + "]");
-                                        Gson gson = new Gson();
-                                        IpRequest ipRequest = gson.fromJson(s, IpRequest.class);
-                                        System.out.println("ipRequest = " + ipRequest);
-                                    }
-                                });
+                        MergeTest.intervalVar();
                     }
                 }).show();
             }
