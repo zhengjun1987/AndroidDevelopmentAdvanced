@@ -1,5 +1,7 @@
 package cn.zhengjun.androiddevelopmentadvanced.chapter08reativex;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -105,7 +107,10 @@ public class MergeTest {
 //        12-01 16:48:45.286 17991-18207/cn.zhengjun.androiddevelopmentadvanced I/System.out: MergeTest.onCompleted
     }
 
+    private static final String TAG = "MergeTest";
+
     public static void intervalVar(){
+        Logger.i(TAG, "MergeTest.intervalVar  " + "");
         Observable.zip(Observable.range(100, 10), Observable.interval(2, TimeUnit.SECONDS).take(10), new Func2<Integer, Long, String>() {
             @Override
             public String call(Integer integer, Long aLong) {
@@ -124,12 +129,12 @@ public class MergeTest {
 
             @Override
             public void onError(Throwable e) {
-                System.out.println("e = [" + e + "]");
+                System.out.println("MergeTest.onError  " + "e = [" + e + "]");
             }
 
             @Override
             public void onNext(TimeInterval<String> stringTimeInterval) {
-                System.out.println("stringTimeInterval = [" + stringTimeInterval + "]");
+                System.out.println("MergeTest.onNext  " + "stringTimeInterval = [" + stringTimeInterval + "]");
             }
         });
 //        12-02 16:04:04.371 9065-9065/cn.zhengjun.androiddevelopmentadvanced I/System.out: MergeTest.onStart

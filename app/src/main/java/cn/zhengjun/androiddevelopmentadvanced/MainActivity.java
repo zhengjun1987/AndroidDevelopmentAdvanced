@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        com.orhanobut.logger.Logger.addLogAdapter(new AndroidLogAdapter());
         ButterKnife.bind(this);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,4 +46,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private static final String TAG = "MainActivity";
 }
