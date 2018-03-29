@@ -19,6 +19,7 @@ public class CustomViewTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_view_test);
         ButterKnife.bind(this);
+        cvButton.setImageResource(R.drawable.zjz);
         cvButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

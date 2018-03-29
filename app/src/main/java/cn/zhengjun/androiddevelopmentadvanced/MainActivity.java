@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,6 +45,42 @@ public class MainActivity extends AppCompatActivity {
                         MergeTest.intervalVar();
                     }
                 }).show();
+            }
+        });
+
+        new GestureDetector(this, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                System.out.println("GestureDetector.onDown  " + "e = [" + e + "]");
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+                System.out.println("GestureDetector.onShowPress  " + "e = [" + e + "]");
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                System.out.println("GestureDetector.onSingleTapUp  " + "e = [" + e + "]");
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                System.out.println("GestureDetector.onScroll  " + "e1 = [" + e1 + "], e2 = [" + e2 + "], distanceX = [" + distanceX + "], distanceY = [" + distanceY + "]");
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                System.out.println("GestureDetector.onLongPress  " + "e = [" + e + "]");
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                System.out.println("GestureDetector.onFling  " + "e1 = [" + e1 + "], e2 = [" + e2 + "], velocityX = [" + velocityX + "], velocityY = [" + velocityY + "]");
+                return false;
             }
         });
     }
