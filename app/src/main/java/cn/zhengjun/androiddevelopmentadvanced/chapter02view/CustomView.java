@@ -3,11 +3,8 @@ package cn.zhengjun.androiddevelopmentadvanced.chapter02view;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.widget.ImageView;
+import android.widget.Scroller;
 
 /**
  * Author  : Zheng Jun
@@ -20,7 +17,7 @@ public class CustomView extends android.support.v7.widget.AppCompatImageView {
 
     private float startX;
     private float startY;
-    private GestureDetector gestureDetector;
+    private Scroller scroller;
 
     public CustomView(Context context) {
         super(context);
@@ -32,6 +29,22 @@ public class CustomView extends android.support.v7.widget.AppCompatImageView {
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        scroller = new Scroller(context);
+    }
+
+    private void smoothScrollTo(int destX,int destY){
+        int scrollX = getScrollX();
+        int deltaX = destX - scrollX;
+        scroller.startScroll(scrollX,0,deltaX,0,1000);
+        invalidate();
+    }
+
+    @Override
+    public void computeScroll() {
+        if (scroller.computeScrollOffset()) {
+            scrollTo(scroller.getCurrX(),scroller.getCurrY());
+            postInvalidate();
+        }
     }
 
     @Override

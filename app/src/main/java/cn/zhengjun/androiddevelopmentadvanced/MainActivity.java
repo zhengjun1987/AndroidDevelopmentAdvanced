@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

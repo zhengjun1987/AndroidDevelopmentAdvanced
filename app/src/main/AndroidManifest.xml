@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".chapter02view.CustomViewTestActivity">
         </activity>
+        <activity android:name=".chapter02view.ViewAnimationActivity">
+        </activity>
     </application>
 
 </manifest>
