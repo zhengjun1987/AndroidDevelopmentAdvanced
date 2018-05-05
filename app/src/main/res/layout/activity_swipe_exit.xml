@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/parentPanel"
+    tools:context="cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitActivity">
+
+    <cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitTextView
+        android:padding="40dp"
+        android:gravity="center"
+        android:text="往右滑动退出本页面"
+        android:id="@+id/tv_inner"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitLayout>

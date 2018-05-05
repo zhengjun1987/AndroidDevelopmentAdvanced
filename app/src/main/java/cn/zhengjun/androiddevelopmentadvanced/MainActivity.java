@@ -14,6 +14,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
+import cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitActivity;
 import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.MergeTest;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     TextView button1;
     @BindView(R.id.button2)
     TextView button2;
+    @BindView(R.id.button3)
+    TextView button3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
                         MergeTest.intervalVar();
                     }
                 }).show();
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SwipeExitActivity.class));
             }
         });
 
