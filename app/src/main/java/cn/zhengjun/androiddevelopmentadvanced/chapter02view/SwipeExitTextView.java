@@ -39,7 +39,9 @@ public final class SwipeExitTextView extends android.support.v7.widget.AppCompat
                 System.out.println("SwipeExitTextView.dispatchTouchEvent  ACTION_CANCEL");
                 break;
         }
-        return super.dispatchTouchEvent(event);
+        boolean dispatchTouchEvent = super.dispatchTouchEvent(event);
+        System.out.println("SwipeExitTextView.dispatchTouchEvent 返回 " + dispatchTouchEvent);
+        return dispatchTouchEvent;
     }
 
     @Override

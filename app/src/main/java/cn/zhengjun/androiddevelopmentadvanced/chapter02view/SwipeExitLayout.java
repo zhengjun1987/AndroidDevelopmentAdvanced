@@ -48,91 +48,58 @@ public class SwipeExitLayout extends LinearLayout {
                 System.out.println("SwipeExitLayout.dispatchTouchEvent  ACTION_CANCEL");
                 break;
         }
-        return super.dispatchTouchEvent(ev);
+        boolean dispatchTouchEvent = super.dispatchTouchEvent(ev);
+        System.out.println("SwipeExitLayout.dispatchTouchEvent 返回 " + dispatchTouchEvent);
+        return dispatchTouchEvent;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        boolean intercepted = false;
+        int evX = (int) ev.getX();
+        int evY = (int) ev.getY();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 System.out.println("SwipeExitLayout.onInterceptTouchEvent  ACTION_DOWN");
-                break;
+                startX = evX;
+                startY = evY;
+                return false;
+//                break;
             case MotionEvent.ACTION_MOVE:
                 System.out.println("SwipeExitLayout.onInterceptTouchEvent  ACTION_MOVE");
+                int deltaX = evX - startX;
+                int deltaY = evY - startY;
+                intercepted = deltaX >= 100 && (deltaY == 0 || Math.abs(deltaX / deltaY) >= 3);
                 break;
             case MotionEvent.ACTION_UP:
                 System.out.println("SwipeExitLayout.onInterceptTouchEvent  ACTION_UP");
                 break;
-            case MotionEvent.ACTION_CANCEL:
-                System.out.println("SwipeExitLayout.onInterceptTouchEvent  ACTION_CANCEL");
-                break;
         }
-//        boolean intercepted = false;
-//        int evX = (int) ev.getX();
-//        int evY = (int) ev.getY();
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                System.out.println("SwipeExitLayout.onInterceptTouchEvent  MotionEvent.ACTION_DOWN");
-//                startX = evX;
-//                startY = evY;
-//                return false;
-////                break;
-//            case MotionEvent.ACTION_MOVE:
-//                System.out.println("SwipeExitLayout.onInterceptTouchEvent  MotionEvent.ACTION_MOVE");
-//                int deltaX = evX - startX;
-//                System.out.println("deltaX = " + deltaX);
-//                int abs = Math.abs(deltaX / (evY - startY));
-//                System.out.println("abs = " + abs);
-//                if (abs > 3 && deltaX > 100) {
-//                    System.out.println("Bingo!");
-//                    intercepted = true;
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                System.out.println("SwipeExitLayout.onInterceptTouchEvent  MotionEvent.ACTION_UP");
-//                break;
-//        }
-//        return intercepted;
-        System.out.println("super.onInterceptTouchEvent(ev) = " + super.onInterceptTouchEvent(ev));
-        return super.onInterceptTouchEvent(ev);
+        return intercepted;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        int evX = (int) event.getX();
+        int evY = (int) event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 System.out.println("SwipeExitLayout.onTouchEvent  ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
                 System.out.println("SwipeExitLayout.onTouchEvent  ACTION_MOVE");
+                int deltaX = evX - startX;
+                int deltaY = evY - startY;
+                if (deltaX >= 100 && (deltaY == 0 || Math.abs(deltaX / deltaY) >= 3)) {
+                    activity.finish();
+                    return true;
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 System.out.println("SwipeExitLayout.onTouchEvent  ACTION_UP");
                 break;
-            case MotionEvent.ACTION_CANCEL:
-                System.out.println("SwipeExitLayout.onTouchEvent  ACTION_CANCEL");
-                break;
         }
-//        int evX = (int) event.getX();
-//        int evY = (int) event.getY();
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                System.out.println("SwipeExitLayout.onTouchEvent  MotionEvent.ACTION_DOWN");
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                System.out.println("SwipeExitLayout.onTouchEvent  MotionEvent.ACTION_MOVE");
-//                if (Math.abs((evX - startX) / (evY - startY)) > 3 && (evX - startX) > 100) {
-//                    Log.d(TAG, "onTouchEvent() called with: event = [" + event + "]");
-//                    System.out.println("滑动退出 = " + evY);
-//                    activity.finish();
-//                    return true;
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                System.out.println("SwipeExitLayout.onTouchEvent  MotionEvent.ACTION_UP");
-//                break;
-//        }
-        return super.onTouchEvent(event);
+        return false;
     }
 
     private static final String TAG = "SwipeExitLayout";
