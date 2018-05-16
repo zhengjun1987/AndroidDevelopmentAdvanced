@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.SwipeExitActivity;
+import cn.zhengjun.androiddevelopmentadvanced.chapter05sql.DatabaseActivity;
 import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.GetRequestInterface;
 import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.MergeTest;
 import cn.zhengjun.androiddevelopmentadvanced.chapter08reativex.Translation;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     TextView button3;
     @BindView(R.id.button4)
     TextView button4;
+    @BindView(R.id.button6)
+    TextView button6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
 //                });
 
                 request();
+            }
+        });
+
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,DatabaseActivity.class));
             }
         });
 

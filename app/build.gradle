@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 26
@@ -42,4 +43,14 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'org.greenrobot:greendao:3.2.2' // add library
+    // This is only needed if you want to use encrypted databases
+//    compile 'net.zetetic:android-database-sqlcipher:3.5.6'//加密库依赖（可选项）
+    compile 'org.greenrobot:eventbus:3.1.1'
+}
+
+greendao {
+    schemaVersion 1 //数据库版本号
+    daoPackage 'cn.zhengjun.androiddevelopmentadvanced.chapter05sql'// 设置DaoMaster、DaoSession、Dao 包名
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
 }
