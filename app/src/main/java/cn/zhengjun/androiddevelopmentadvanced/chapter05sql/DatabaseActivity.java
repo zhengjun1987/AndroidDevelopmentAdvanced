@@ -34,6 +34,8 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
     TextView buttonQuery;
     @BindView(R.id.tv_query)
     TextView tvQuery;
+    @BindView(R.id.button_recover)
+    TextView buttonRecover;
     private MyApp application;
 
     @Override
@@ -45,6 +47,7 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
         buttonAdd.setOnClickListener(this);
         buttonUpdate.setOnClickListener(this);
         buttonQuery.setOnClickListener(this);
+        buttonRecover.setOnClickListener(this);
     }
 
     @SuppressLint("SetTextI18n")
@@ -62,7 +65,7 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
                     long insert = userDao.insert(user);
                     System.out.println("insert = " + insert);
                 } catch (SQLiteException e) {
-                    Toast.makeText(this, "数据库异常："+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "数据库异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.button_delete:
@@ -71,11 +74,16 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
             case R.id.button_update:
                 userDao.update(user);
                 break;
+            case R.id.button_recover:
+                System.out.println("DatabaseActivity.onClick");
+                BackupHelper.loadBackupData(application);
+                break;
             case R.id.button_query:
                 List<User> users = userDao.loadAll();
                 System.out.println("users = " + users);
+                System.out.println("Integer.MAX_VALUE = " + Integer.MAX_VALUE);
                 for (User user1 : users) {
-                    tvQuery.setText(tvQuery.getText()+"\n"+user1.toString());
+                    tvQuery.setText(tvQuery.getText() + "\n" + user1.toString());
                 }
                 break;
         }
