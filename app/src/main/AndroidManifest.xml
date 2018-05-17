@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".chapter02view.SwipeExitActivity">
         </activity>
+        <activity android:name=".chapter04multithreads.HandlerThreadActivity">
+        </activity>
         <activity android:name=".chapter05sql.DatabaseActivity"/>
     </application>
 
