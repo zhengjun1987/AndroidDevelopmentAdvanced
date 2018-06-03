@@ -19,6 +19,7 @@ public class HandlerThreadActivity extends AppCompatActivity {
     private HandlerThread handlerThread;
     private Handler handler;
     private boolean isUpdateInfo;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +35,18 @@ public class HandlerThreadActivity extends AppCompatActivity {
 
         handlerThread.start();
 
+        mHandler = new Handler();
+
         handler = new Handler(handlerThread.getLooper()){
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                System.out.println("Handler.handleMessage  " + "msg = [" + msg + "] " + "Thread.currentThread() = [" + Thread.currentThread() + "]");
+                System.out.println("Handler.handleMessage  " + "msg = [" + msg.what + "] " + "Thread.currentThread() = [" + Thread.currentThread() + "]");
                 update();
                 if (isUpdateInfo){
                     handler.sendEmptyMessage(MSG_UPDATE_INFO);
+                    System.out.println("handler = " + handler.getLooper().getThread());
+                    System.out.println("mHandler = " + mHandler.getLooper().getThread());
                 }
             }
         };
@@ -52,7 +57,7 @@ public class HandlerThreadActivity extends AppCompatActivity {
         System.out.println("HandlerThreadActivity.update  " + "");
         try {
             Thread.sleep(1000);
-            handler.post(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     System.out.println("update Runnable.run "+ "Thread.currentThread() = [" + Thread.currentThread() + "]");

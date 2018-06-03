@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.chapter02view.CustomViewTestActivity;
@@ -53,6 +55,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button4.setOnClickListener(this);
         button5.setOnClickListener(this);
         button6.setOnClickListener(this);
+
+        EventBus.getDefault().register(this);
+    }
+
+    public void onEvent(Object msg){
+        MessageEvent messageEvent = msg instanceof MessageEvent ? ((MessageEvent) msg) : null;
+        System.out.println("messageEvent = " + messageEvent);
+        switch (messageEvent.getmMsgCode()) {
+            case 1:
+                button6.setText(messageEvent.getmMsg());
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void request() {

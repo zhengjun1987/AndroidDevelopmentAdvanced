@@ -10,10 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.zhengjun.androiddevelopmentadvanced.MessageEvent;
 import cn.zhengjun.androiddevelopmentadvanced.MyApp;
 import cn.zhengjun.androiddevelopmentadvanced.R;
 
@@ -64,6 +67,7 @@ public class DatabaseActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     long insert = userDao.insert(user);
                     System.out.println("insert = " + insert);
+                    EventBus.getDefault().post(new MessageEvent(1,etName.getText().toString().trim(),null));
                 } catch (SQLiteException e) {
                     Toast.makeText(this, "数据库异常：" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
