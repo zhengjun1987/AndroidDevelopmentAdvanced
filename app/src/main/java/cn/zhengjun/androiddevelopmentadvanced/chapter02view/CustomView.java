@@ -1,9 +1,11 @@
 package cn.zhengjun.androiddevelopmentadvanced.chapter02view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 import android.widget.Scroller;
 
 /**
@@ -13,7 +15,8 @@ import android.widget.Scroller;
  * Summary : 在这里描述Class的主要功能
  */
 
-public class CustomView extends android.support.v7.widget.AppCompatImageView {
+@SuppressLint("AppCompatCustomView")
+public class CustomView extends ImageView {
 
     private float startX;
     private float startY;

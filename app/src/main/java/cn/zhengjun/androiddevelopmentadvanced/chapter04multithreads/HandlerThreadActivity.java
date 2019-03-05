@@ -1,17 +1,17 @@
 package cn.zhengjun.androiddevelopmentadvanced.chapter04multithreads;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zhengjun.androiddevelopmentadvanced.R;
 
-public class HandlerThreadActivity extends AppCompatActivity {
+public class HandlerThreadActivity extends Activity {
 
     public static final int MSG_UPDATE_INFO = 666;
     @BindView(R.id.tv_text)
